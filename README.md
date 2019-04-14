@@ -29,6 +29,12 @@ Linux#64:
 $ docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp -e GOOS=linux -e GOARCH=amd64 golang:latest go build -v
 ```
 
+Mac#64:  
+
+```
+$ docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp -e GOOS=darwin -e GOARCH=amd64 golang:latest go build -v
+```
+
 ### Usage
 
 ```
