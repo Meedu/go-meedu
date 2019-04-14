@@ -3,6 +3,32 @@
 
 因为php在fpm跑composer命令稳定性太差，所以使用go提供api服务来安装composer的依赖，从而使得插件安装更加方便。
 
+### 编译
+
+window#386:  
+
+```
+$ docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp -e GOOS=windows -e GOARCH=386 golang:latest go build -v
+```
+
+window#64:  
+
+```
+$ docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp -e GOOS=windows -e GOARCH=amd64 golang:latest go build -v
+```
+
+Linux#386:  
+
+```
+$ docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp -e GOOS=linux -e GOARCH=386 golang:latest go build -v
+```
+
+Linux#64:  
+
+```
+$ docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp -e GOOS=linux -e GOARCH=amd64 golang:latest go build -v
+```
+
 ### Usage
 
 ```
