@@ -56,6 +56,7 @@ docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp -e GOOS=darwin -e GOA
 | `dir` | `string` | 命令执行路径，一般为meedu所在根目录 |
 | `addons` | `string` | 需要安装依赖的插件，用于回调 |
 | `notify` | `string` | 回调URL，用于通知meedu的插件依赖安装状态 |
+| `key` | `string` | AppKey，用于安全验证 |
 
 
 **示例：**  
