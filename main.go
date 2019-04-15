@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os/exec"
+	"strings"
 	"sync"
 )
 
@@ -29,16 +30,28 @@ func main() {
 			fmt.Println("params error")
 			return
 		}
+		pkgs := strings.Split(pkg, "|")
 		if *appKey != key {
 			fmt.Println("key error.")
 			return
 		}
 		// 执行命令
 		go func() {
+			// 防止并发
 			mu.Lock()
+
+			// 打印log
 			fmt.Printf("prepare run [%s %s %s %s] command\n", php, composer, action, pkg)
-			cmd := exec.Command(php, composer, action, pkg)
+
+			// 组装执行的参数
+			arg := []string{composer, action, "--no-interaction", "--no-update", "--no-suggest"}
+			arg = append(arg, pkgs...)
+			cmd := exec.Command(php, arg...)
+
+			// 设置执行目录
 			cmd.Dir = dir
+
+			// 执行
 			output, err := cmd.CombinedOutput()
 			fmt.Printf("%s %v", output)
 			mu.Unlock()
@@ -48,7 +61,7 @@ func main() {
 			if err != nil {
 				status = "fail"
 			}
-			_, _ = http.Get(notify + "?addons=" + addons + "&status=" + status)
+			_, _ = http.Get(notify + "?addons=" + addons + "&status=" + status + "&key=" + key)
 		}()
 	})
 	fmt.Printf("listen:%s\n", *address)
