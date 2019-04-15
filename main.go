@@ -12,6 +12,7 @@ var mu sync.Mutex
 
 func main() {
 	var address = flag.String("address", "0.0.0.0:8089", "please input listen address.")
+	var appKey = flag.String("key", "", "please input app key for sec.")
 	flag.Parse()
 	http.HandleFunc("/install", func(w http.ResponseWriter, r *http.Request) {
 		// 解析参数
@@ -23,8 +24,13 @@ func main() {
 		dir := form.Get("dir")
 		addons := form.Get("addons")
 		notify := form.Get("notify")
+		key := form.Get("key")
 		if php == "" || composer == "" || action == "" || pkg == "" {
 			fmt.Println("params error")
+			return
+		}
+		if *appKey != key {
+			fmt.Println("key error.")
 			return
 		}
 		// 执行命令
