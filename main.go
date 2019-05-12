@@ -44,7 +44,7 @@ func main() {
 			fmt.Printf("prepare run [%s %s %s %s] command\n", php, composer, action, pkg)
 
 			// 组装执行的参数
-			arg := []string{composer, action, "--no-interaction", "--no-update", "--no-suggest"}
+			arg := []string{composer, action, "--no-interaction", "--no-update"}
 			arg = append(arg, pkgs...)
 			cmd := exec.Command(php, arg...)
 
@@ -53,7 +53,7 @@ func main() {
 
 			// 执行
 			output, err := cmd.CombinedOutput()
-			fmt.Printf("%s %v", output)
+			fmt.Printf("%s", output)
 			mu.Unlock()
 
 			// 回调
@@ -61,7 +61,9 @@ func main() {
 			if err != nil {
 				status = "fail"
 			}
-			_, _ = http.Get(notify + "?addons=" + addons + "&status=" + status + "&key=" + key)
+			if action == "require" {
+				_, _ = http.Get(notify + "?addons=" + addons + "&status=" + status + "&key=" + key)
+			}
 		}()
 	})
 	fmt.Printf("listen:%s\n", *address)
